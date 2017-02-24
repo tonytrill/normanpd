@@ -3,6 +3,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 import re
 import os
+import PyPDF2
 
 #this will fetch the pdfs from the URL
 def fetchincidents():
@@ -25,6 +26,24 @@ def fetchincidents():
             f.write(current.read())
             f.close()
 
+
+def extractincidents():
+    incidents = []
+    def getPDFContent(path):
+        content = ""
+        pdf = PyPDF2.PdfFileReader(open(path, "rb"))
+        for i in range(pdf.getNumPages()):
+            content += pdf.getPage(i).extractText()
+        content = " ".join(content.replace("\xa0", " ").strip().split())
+        exp = r'(\d{1,2}/\d{1,2}/\d{4}\s\d{1,2}:\d{1,2})\s(\d{4}-\d{8})\s(.+?(?=\s[A-Z][a-z]{1,9}))\s(.+?(?=OK\d+|\d+))'
+        l = re.compile(exp).split(content)
+        return l
+    for filenames in os.listdir("./normanpdPDFs"):
+        inc = getPDFContent("./normanpdPDFs/" + filenames)
+        inc = inc[1:]
+        incidents.extend(inc)
+    incidents = [incidents[x:x+5] for x in range(0, len(incidents), 5)]
+    print(incidents)
 # creates the normanpd database
 def createdb():
     # creates a connection to a db called normanpd
@@ -35,4 +54,4 @@ def createdb():
 
 
 
-fetchincidents()
+extractincidents()

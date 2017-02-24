@@ -19,7 +19,7 @@ def fetchincidents():
             print(True)
             print(tag)
             current = urllib.request.urlopen('http://normanpd.normanok.gov/' + tag['href'])
-            newpath = "normanpdPDFs"
+            newpath = os.getcwd() + "/normanpdPDFs"
             if not os.path.exists(newpath):
                 os.makedirs(newpath)
             f = open(newpath + "/" + test.group() + ".pdf", "wb")
@@ -40,12 +40,17 @@ def extractincidents():
         exp = r'(\d{1,2}/\d{1,2}/\d{4}\s\d{1,2}:\d{1,2})\s(\d{4}-\d{8})\s(.+?(?=\s[A-Z][a-z]{1,9}))\s(.+?(?=OK\d+|\d+))'
         l = re.compile(exp).split(content)
         return l
-    for filenames in os.listdir("./normanpdPDFs"):
-        inc = getPDFContent("./normanpdPDFs/" + filenames)
+
+    for filenames in os.listdir(os.getcwd() + "/normanpdPDFs"):
+        inc = getPDFContent(os.getcwd() + "/normanpdPDFs/" + filenames)
         inc = inc[1:]
         incidents.extend(inc)
     incidents = [incidents[x:x+5] for x in range(0, len(incidents), 5)]
-    print(incidents)
+
+    for i in range(len(incidents)):
+        incidents[i].extend([i+1])
+
+    return incidents
 
 
 # creates the normanpd database
@@ -54,8 +59,26 @@ def createdb():
     # if the db isn't already created it will create a new one.
     conn = sqlite3.connect('normanpd.db')
     conn.execute('''CREATE TABLE incidents
-    (id INTEGER, number TEXT, data_time TEXT, location TEXT, nature TEXT, ORI TEXT)''')
+    (date_time TEXT, number TEXT, location TEXT, nature TEXT, ori TEXT, id INTEGER)''')
+    conn.close()
+
+# Take the incidents from the list and add them to the database
+def populatedb(incidents):
+    conn = sqlite3.connect('normanpd.db')
+    try:
+        conn.executemany('''INSERT INTO incidents VALUES (?, ?, ?, ?, ?, ?)''', incidents)
+        conn.commit()
+    except sqlite3.IntegrityError:
+        print("Error")
+    conn.close()
+
+# Print out the number of rows in the db
+def status():
+    conn = sqlite3.connect('normanpd.db').cursor()
+    conn.execute('SELECT COUNT(*) from incidents')
+    count = conn.fetchone()
+    print(count[0])
 
 
 
-extractincidents()
+

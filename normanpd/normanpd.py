@@ -27,6 +27,8 @@ def fetchincidents():
             f.close()
 
 
+# This goes through all of the pdf files in the folder
+# And extracts the data for each incident in a list.
 def extractincidents():
     incidents = []
     def getPDFContent(path):
@@ -44,6 +46,8 @@ def extractincidents():
         incidents.extend(inc)
     incidents = [incidents[x:x+5] for x in range(0, len(incidents), 5)]
     print(incidents)
+
+
 # creates the normanpd database
 def createdb():
     # creates a connection to a db called normanpd

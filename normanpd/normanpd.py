@@ -6,7 +6,9 @@ import os
 import PyPDF2
 from random import *
 
-#this will fetch the pdfs from the URL
+# this will fetch the pdfs from the URL
+# this will create a directory in the working directory
+# store the pdfs in the working directory.
 def fetchincidents():
     req = urllib.request.urlopen('http://normanpd.normanok.gov/content/daily-activity')
     inc = req.read()
@@ -32,6 +34,7 @@ def fetchincidents():
 # And extracts the data for each incident in a list.
 def extractincidents():
     incidents = []
+    # Gets the actual contents of the PDF using PyPDF2
     def getPDFContent(path):
         content = ""
         pdf = PyPDF2.PdfFileReader(open(path, "rb"))
@@ -41,13 +44,13 @@ def extractincidents():
         exp = r'(\d{1,2}/\d{1,2}/\d{4}\s\d{1,2}:\d{1,2})\s(\d{4}-\d{8})\s(.+?(?=\s[A-Z][a-z]{1,9}))\s(.+?(?=OK\d+|\d+))'
         l = re.compile(exp).split(content)
         return l
-
+    # For every pdf in the directory get the incidents and add them to a list
     for filenames in os.listdir(os.getcwd() + "/normanpdPDFs"):
         inc = getPDFContent(os.getcwd() + "/normanpdPDFs/" + filenames)
         inc = inc[1:]
         incidents.extend(inc)
     incidents = [incidents[x:x+5] for x in range(0, len(incidents), 5)]
-
+    # Adds the id values to the list
     for i in range(len(incidents)):
         incidents[i].extend([i+1])
 
@@ -76,6 +79,7 @@ def populatedb(incidents):
 
 
 # Print out the number of rows in the db
+# Print out 5 random rows
 def status(incidents):
     conn = sqlite3.connect('normanpd.db').cursor()
     conn.execute('SELECT COUNT(*) from incidents')

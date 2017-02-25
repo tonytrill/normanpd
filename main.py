@@ -1,6 +1,5 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import normanpd
 from normanpd import normanpd
 
@@ -20,8 +19,8 @@ def main():
     normanpd.populatedb(incidents)
 
     # Print status
-    normanpd.status()
+    normanpd.status(incidents)
 
-if __name__ == 'main':
+if __name__ == "__main__":
     main()
 

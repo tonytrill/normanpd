@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import re
 import os
 import PyPDF2
+from random import *
 
 #this will fetch the pdfs from the URL
 def fetchincidents():
@@ -62,6 +63,7 @@ def createdb():
     (date_time TEXT, number TEXT, location TEXT, nature TEXT, ori TEXT, id INTEGER)''')
     conn.close()
 
+
 # Take the incidents from the list and add them to the database
 def populatedb(incidents):
     conn = sqlite3.connect('normanpd.db')
@@ -72,12 +74,19 @@ def populatedb(incidents):
         print("Error")
     conn.close()
 
+
 # Print out the number of rows in the db
-def status():
+def status(incidents):
     conn = sqlite3.connect('normanpd.db').cursor()
     conn.execute('SELECT COUNT(*) from incidents')
     count = conn.fetchone()
     print(count[0])
+    for i in range(5):
+        j = randint(1, len(incidents))
+        conn.execute('''SELECT * from incidents WHERE id = ?''', (j,))
+        rands = conn.fetchall()
+        print(rands)
+
 
 
 

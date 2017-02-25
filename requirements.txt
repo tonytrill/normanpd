@@ -4,3 +4,4 @@ numpy==1.12.0
 recordtype==1.1
 six==1.10.0
 urlparse2==1.1.1
+PyPDF2==1.26.0

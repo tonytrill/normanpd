@@ -37,7 +37,9 @@ How to run:
 Make sure to complete the above requirements section and have the proper packages installed.
 Navigate in the terminal to where the normanpd project folder is.
 For example: if the normanpd project folder is in your home directory, simply make sure your current directory is ~
-(cd ~)
+(cd ~). Note, in this submission the project folder was submitted within a directory called normanpd_silv6928. The
+normanpd_silv6928 folder is not considered the project folder. The normanpd folder within this directory is the true
+project folder.
 
 Utilize the following command in the Linux Command terminal.
 

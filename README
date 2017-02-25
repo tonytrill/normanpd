@@ -9,16 +9,21 @@ get the job done.
 Norman PD website - http://normanpd.normanok.gov/content/daily-activity
 
 Attached for this project submission is a version of the database that was created from one run. I renamed it so that it would
-not interfere with a run of the program.
+not interfere with a first run of the program. Please see "Bugs/Edge Cases" section below to understand what to do for multiple
+runs of the program.
 
 Norman PD Assignment:
 
 In this assignment a few activities are performed. First, the python script queries the Norman PD website (listed above) for
 all of the daily incidents on the web page. The script will save each of the PDFs into a new folder of your working directory.
+As it is saving the program will print to let you know each PDF is being saved.
 Next the script takes each of the PDFs and extracts the daily incident data into a python list. From there a sqlite3 database
 is created. Once the database is created the incident data is inserted into the database utilizing python/sqlite3 commands.
 Once all of the data is loaded into the database the number of rows in the database is printed, and five random rows from the database
-are also printed.
+are also printed. The following blog post greatly helped in extracting the data from the PDFs.
+(http://code.activestate.com/recipes/511465/). It shows in python2 how to use the PyPDF to extract PDF data line by line.
+A version of this was edited to be usable for python3 and PyPDF2. The program utilizes a Regular Expression in order to
+adjust the data when saved into a list format.
 
 Language:
 Python 3
@@ -41,7 +46,11 @@ python3 ./normanpd/main.py
 This will run the program utilizing python3 that you have loaded. If utilizing a virtual environment then please make sure
 the virtual environment is activated and run the program using the above.
 
+Bugs/Edge Cases:
+The program does not automatically handle multiple runs.
 If running for a second time, please make sure the normanpd database is deleted.
+The program should just replace any PDFs if running for a second time. If this fails please delete the repository that
+was created by the program for PDF storage.
 
 Notes:
 This project was created for the University of Oklahoma CS 5970 - Intro to Text Analytics Course.

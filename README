@@ -11,6 +11,15 @@ Norman PD website - http://normanpd.normanok.gov/content/daily-activity
 Attached for this project submission is a version of the database that was created from one run. I renamed it so that it would
 not interfere with a run of the program.
 
+Norman PD Assignment:
+
+In this assignment a few activities are performed. First, the python script queries the Norman PD website (listed above) for
+all of the daily incidents on the web page. The script will save each of the PDFs into a new folder of your working directory.
+Next the script takes each of the PDFs and extracts the daily incident data into a python list. From there a sqlite3 database
+is created. Once the database is created the incident data is inserted into the database utilizing python/sqlite3 commands.
+Once all of the data is loaded into the database the number of rows in the database is printed, and five random rows from the database
+are also printed.
+
 Language:
 Python 3
 
